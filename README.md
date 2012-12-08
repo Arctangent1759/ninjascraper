@@ -5,9 +5,24 @@ gets exams from ninjacourses
 
 Super duper beta!
 
-only works for cs courses atm :P, and only works for finals.
-defaults to cs70. Downloads pdf files to local directory.
-Usage: (This will download all 61c final exams from ninjacourses)
+Downloads pdf files to local directory.
+
+scrape_ninja.py:
+-------------------
+
+This will download all CS exams and save them in the same directory as scrape_ninja.py. They will be ordered in folders arranged according to course number.
+
+Usage:
 ```
-python scrape_ninja.py 61C 
+python scrape_ninja.py 
+```
+
+scraper.py:
+-----------
+
+Scrape any exam by entering department, abbreviation, course number and a list of professor names to choose from. 
+
+Usage:
+```
+python scraper.py 
 ```

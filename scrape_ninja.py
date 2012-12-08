@@ -1,7 +1,9 @@
 import urllib2, urllib, bs4
 import sys
 import traceback
-import collections 
+import collections
+import os
+
 def is_semester(string):
     return "Fall " in string or "Spring " in string or "Summer " in string 
 
@@ -25,7 +27,7 @@ ways = ["","(solution)","solution"]
 
 def scrape_ninja(course="70",test="Midterm 1",department="COMPSCI",abv="CS"):
     prof_year = scrape_hkn(abv,course)
-    base_url = "http://media.ninjacourses.com/var/exams/1/{0}/{1}%20{2}%20-%20{3}%20{4}%20-%20{5}%20-%20{6}%20{7}.pdf" 
+    base_url = "http://media.ninjacourses.com/var/exams/1/{0}/{1}%20{2}%20-%20{3}%20{4}%20-%20{5}%20-%20{6}%20{7}.pdf"
     exists = {}  
     for semester,profs in prof_year.iteritems():
             sem,year = tuple(semester.split()) 
@@ -47,18 +49,31 @@ def scrape_ninja(course="70",test="Midterm 1",department="COMPSCI",abv="CS"):
                         urllib2.urlopen(url) 
                         exists[str(profs + [test,way])+" "+semester ] = url
                     except Exception as e:
-                        print e  
-                        traceback.print_exc()
+                        #print e  
+                        #traceback.print_exc()
                         pass
     for info,url in exists.iteritems():
         print url
-        urllib.urlretrieve(url,info+ ".pdf")
+        urllib.urlretrieve(url, abv + course + '/' + info+ '.pdf')
 
 tests = ['Midterm','Midterm 1','Midterm 2', 'Midterm 3','Final']
 
+"""
 if (len(sys.argv) > 1):
     for test in tests: 
         scrape_ninja(sys.argv[1],test) 
 else:
     for test in tests: 
         scrape_ninja("70",test)
+"""
+def save_cs_exams():
+    numbers = ['61A','61B','61C','70','10','150','152','160','161','162','164',
+    '169','170','172','174','C191','184','186','188']
+    for number in numbers:
+        dirname = 'CS' + str(number)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+        for test in tests:
+            scrape_ninja(str(number), test)
+
+save_cs_exams()
